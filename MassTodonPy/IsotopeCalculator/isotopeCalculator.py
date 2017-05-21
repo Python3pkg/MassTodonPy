@@ -17,11 +17,12 @@
 #   <https://www.gnu.org/licenses/agpl-3.0.en.html>.
 
 from IsoSpecPy      import IsoSpecPy
-from formulaParser  import formulaParser
+from .formulaParser  import formulaParser
 from math           import exp, floor, fsum
 from collections    import Counter, defaultdict
+from functools import reduce
 try:
-  import cPickle as pickle
+  import pickle as pickle
 except:
   import pickle
 from numpy.random   import multinomial, normal
@@ -32,7 +33,7 @@ import pkg_resources
 def cdata2numpyarray(x):
     '''Turn c-data into a numpy array.'''
     res = np.empty(len(x))
-    for i in xrange(len(x)):
+    for i in range(len(x)):
         res[i] = x[i]
     return res
 
@@ -42,7 +43,7 @@ def agg_spec_proper(masses, probs, digits=2):
     lists = defaultdict(list)
     for mass, prob in zip(masses.round(digits), probs):
         lists[mass].append(prob)
-    newMasses = np.array(lists.keys())
+    newMasses = np.array(list(lists.keys()))
     newProbs  = np.empty(len(newMasses))
     for prob, mass in zip(np.nditer(newProbs,op_flags=['readwrite']), newMasses):
         prob[...] = fsum(lists[mass])
@@ -79,10 +80,10 @@ class isotopeCalculator:
         self.jP = jP
         self.elementsMassMean = dict(
             (el, sum( pr*m for pr, m in zip(self.isoProbs[el], self.isoMasses[el]) ) )
-            for el in self.isoMasses.keys() )
+            for el in list(self.isoMasses.keys()) )
         self.elementsMassVar  = dict(
             (el, sum( pr*m**2 for pr, m in zip(self.isoProbs[el], self.isoMasses[el])) - self.elementsMassMean[el]**2 )
-            for el in self.isoMasses.keys() )
+            for el in list(self.isoMasses.keys()) )
         self.isotopicEnvelopes = {}
         self.precDigits = precDigits
         self.formParser = formulaParser()
@@ -90,17 +91,17 @@ class isotopeCalculator:
 
     def getMonoisotopicMass(self, atomCnt):
         '''Calculate monoisotopic mass of an atom count.'''
-        return sum( self.isoMasses[el][0]*elCnt for el, elCnt in atomCnt.items() )
+        return sum( self.isoMasses[el][0]*elCnt for el, elCnt in list(atomCnt.items()) )
 
 
     def getMassMean(self, atomCnt):
         '''Calculate average mass of an atom count.'''
-        return sum( self.elementsMassMean[el]*elCnt for el, elCnt in atomCnt.items() )
+        return sum( self.elementsMassMean[el]*elCnt for el, elCnt in list(atomCnt.items()) )
 
 
     def getMassVar(self, atomCnt):
         '''Calculate mass variance of an atom count.'''
-        return sum( self.elementsMassVar[el]*elCnt for el, elCnt in atomCnt.items() )
+        return sum( self.elementsMassVar[el]*elCnt for el, elCnt in list(atomCnt.items()) )
 
 
     def getSummary(self, atomCnt_str):
@@ -120,7 +121,7 @@ class isotopeCalculator:
         isotope_masses  = []
         isotope_probs   = []
         atomCnt = self.formParser.parse(atomCnt_str)
-        for el, cnt in atomCnt.items():
+        for el, cnt in list(atomCnt.items()):
             counts.append(cnt)
             isotope_masses.append(self.isoMasses[el])
             isotope_probs.append(self.isoProbs[el])
@@ -180,7 +181,7 @@ class isotopeCalculator:
                     m_over_z = np.round(normal(loc=m_average, scale=sigma, size=cnt), precDigits)
                     spectrum.update(m_over_z)
 
-            spectrum = np.array(spectrum.keys()), np.array([ spectrum[k] for k in spectrum ])
+            spectrum = np.array(list(spectrum.keys())), np.array([ spectrum[k] for k in spectrum ])
         else:
             spectrum = (mz_average, counts)
         return spectrum

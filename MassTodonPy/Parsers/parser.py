@@ -21,6 +21,7 @@ from collections import defaultdict
 from MassTodonPy.IsotopeCalculator import aggregate, merge_runs
 import numpy as np
 import os
+from functools import reduce
 
 def round_spec(mz, intensity, digits=2):
     '''Aggregate the spectrum so that intensities of masses with the same number of significant digits are summed.'''

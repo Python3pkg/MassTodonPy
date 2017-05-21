@@ -72,7 +72,7 @@ def create_G_nodes(SFG):
             Gs[G] += SFG.node[E]['intensity']
             E2remove.append(E)
     SFG.remove_nodes_from(E2remove)
-    for Gcnt, (Is, G_intensity) in enumerate(Gs.items()):
+    for Gcnt, (Is, G_intensity) in enumerate(list(Gs.items())):
         G = 'G' + str(Gcnt)
         SFG.add_node(G, intensity=G_intensity, type='G')
         for I in Is:

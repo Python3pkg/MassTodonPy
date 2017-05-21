@@ -221,8 +221,8 @@ def reaction_analist_advanced(MassTodonResults, Q, fasta, maxIter=100, const=100
         get_graphs_analyze_precursors_get_LogProb(MassTodonResults, Q, fasta, eps)
     i = 0
     if verbose:
-        print float(ETnoDs_on_precursors)/(ETnoDs_on_precursors + PTRs_on_precursors)
-        print float(PTRs_on_precursors)/(ETnoDs_on_precursors + PTRs_on_precursors)
+        print(float(ETnoDs_on_precursors)/(ETnoDs_on_precursors + PTRs_on_precursors))
+        print(float(PTRs_on_precursors)/(ETnoDs_on_precursors + PTRs_on_precursors))
     LogLikPrev = 0.0
     while True:
         LogLik, ReactionCount, stati = solve_simplex_tasks(Graphs, Q, LogProb, fasta, const)
@@ -234,8 +234,8 @@ def reaction_analist_advanced(MassTodonResults, Q, fasta, maxIter=100, const=100
         LogLikPrev = LogLik
         i += 1
         if verbose:
-            print LogLik, stati
-            print
+            print(LogLik, stati)
+            print()
         if crit=='logLikDiff':
             stopCond = abs(LogLikDiff)<tol
         if crit=='L2':

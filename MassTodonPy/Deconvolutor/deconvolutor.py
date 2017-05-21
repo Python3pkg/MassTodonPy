@@ -23,12 +23,12 @@ solvers.options['show_progress'] = False
 
 
 def diag(val, dim):
-    return spdiag([spmatrix(val,[0],[0]) for i in xrange(dim)])
+    return spdiag([spmatrix(val,[0],[0]) for i in range(dim)])
 
 
 def normalize_rows(M):
     '''Divide rows of a matrix by their sums.'''
-    for i in xrange(M.size[0]):
+    for i in range(M.size[0]):
         row_hopefully = M[i,:]
         M[i,:] = row_hopefully/sum(row_hopefully)
 

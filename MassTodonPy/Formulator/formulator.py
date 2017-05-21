@@ -18,8 +18,8 @@
 
 from linearCounter import linearCounter as lCnt
 from itertools import chain
-from protonations import protonate
-from bricks import makeBricks
+from .protonations import protonate
+from .bricks import makeBricks
 from collections import defaultdict
 
 def countIsNegative(atomCnt):
@@ -29,7 +29,7 @@ def countIsNegative(atomCnt):
 
 def atomCnt2string(atomCnt):
     '''Translate a dictionary of atom counts into a uniquely defined string.'''
-    keys = atomCnt.keys()
+    keys = list(atomCnt.keys())
     keys.sort()
     return "".join( el+str(atomCnt[el]) for el in keys )
 
@@ -38,7 +38,7 @@ def standardize(modifications):
     '''Standardize modifications so that they meet the internal nomenclature scheme.'''
     backboneAtom2aaNomen = {'N':'L', 'Calpha':'C', 'C':'R'}
     R = defaultdict(lambda:defaultdict(lCnt))
-    for tag, atomCnt in modifications.items():
+    for tag, atomCnt in list(modifications.items()):
         R[ tag[1]-1 ][ backboneAtom2aaNomen[tag[0]] ] = lCnt(atomCnt)
     return R
 

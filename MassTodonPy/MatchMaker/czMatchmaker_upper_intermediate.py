@@ -80,7 +80,7 @@ def get_graph_analyze_precursors(MassTodonResults, Q, fasta):
 
 def diag(val, dim):
     '''Make a sparse identity matrix multiplied by a scalar val.'''
-    return spdiag([spmatrix(val,[0],[0]) for i in xrange(dim)])
+    return spdiag([spmatrix(val,[0],[0]) for i in range(dim)])
 
 
 def incidence_matrix(G, Jdim, Idim):
@@ -148,9 +148,9 @@ def reaction_analist_upper_intermediate(MassTodonResults, Q, fasta, mu=0.0, lam=
     TotalReactions = sum(Counts[s] for s in Counts)
     Prob['no reaction'] = float(unreacted_precursors)/(unreacted_precursors + TotalReactions)
     Prob['reaction'] = 1.0 - Prob['no reaction']
-    TotalFrags = sum(Counts[s] for s in Counts if isinstance(s, (int,long)) )
+    TotalFrags = sum(Counts[s] for s in Counts if isinstance(s, int) )
     for s in Counts:
-        if isinstance(s, (int,long)):
+        if isinstance(s, int):
             Prob[s] = float(Counts[s])/TotalFrags
     Prob['fragmentation'] = float(TotalFrags)/TotalReactions
     Prob['no fragmentation'] = 1.0 - Prob['fragmentation']
@@ -161,8 +161,8 @@ def reaction_analist_upper_intermediate(MassTodonResults, Q, fasta, mu=0.0, lam=
     Prob['ETnoD_prec'] = float(ETnoDs_on_precursors)/(ETnoDs_on_precursors+PTRs_on_precursors)
     Prob['PTR_prec']   = 1.0 - Prob['ETnoD_prec']
     if verbose:
-        print 'ETnoD on frags',  Counts['ETnoD'], 'ETnoD on prec', Counts['ETnoD_precursor']
-        print 'PTR on frags',    Counts['PTR'],   'PTR on prec', Counts['PTR_precursor']
+        print('ETnoD on frags',  Counts['ETnoD'], 'ETnoD on prec', Counts['ETnoD_precursor'])
+        print('PTR on frags',    Counts['PTR'],   'PTR on prec', Counts['PTR_precursor'])
         return Prob, stati
     else:
         return Prob

@@ -18,7 +18,7 @@
 
 import igraph as ig
 from linearCounter import linearCounter as lCnt
-from aminoAcid import AminoAcids
+from .aminoAcid import AminoAcids
 
 def elementContent(G):
     '''Extracts numbes of atoms of elements that make up the graph of a molecule.'''

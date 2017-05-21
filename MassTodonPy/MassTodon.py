@@ -63,11 +63,11 @@
 # .7.......7....OOOOO....ZOZI....:ZOZ......Z.....ZOZ7.....OZZ.....7ZOZ....Z....Z..
 # ................................................................................
 
-from Formulator         import makeFormulas
-from IsotopeCalculator  import isotopeCalculator
-from PeakPicker         import PeakPicker
-from Solver             import solve
-from Parsers            import readSpectrum
+from .Formulator         import makeFormulas
+from .IsotopeCalculator  import isotopeCalculator
+from .PeakPicker         import PeakPicker
+from .Solver             import solve
+from .Parsers            import readSpectrum
 
 class MassTodon():
     def __init__(   self,
@@ -118,7 +118,7 @@ class MassTodon():
             if spectrum:
                 self.spectrum = spectrum # a tupple of two numpy arrays
             else:
-                print 'Wrong path or you did not provide a spectrum.'
+                print('Wrong path or you did not provide a spectrum.')
                 raise KeyError
 
     def prepare_problems(self, M_minProb=.75):
